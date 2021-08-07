@@ -1,0 +1,25 @@
+hsb2 <- read.table('https://www.openintro.org/data/csv/hsb2.csv',
+                   header=T, sep=",")
+attach(hsb2)
+library(lattice)
+#defining ses.f to be a factor variable
+hsb2$ses.f = factor(hsb2$ses, labels=c("low", "middle", "high"))
+#histograms
+histogram(~write, hsb2)
+histogram(~write | ses.f, hsb2)
+densityplot(~socst, hsb2)
+densityplot(~socst | ses.f, hsb2)
+qqmath(~write, hsb2)
+bwplot(~math, hsb2)
+bwplot(ses.f~math, hsb2)
+xyplot(write~math, hsb2)
+xyplot(write~math | ses.f, hsb2)
+subset <- hsb2[ , 8:12]
+splom(~subset[ , 1:4])
+splom(~subset[, 1:3] | subset[, 5])
+reg <- lm(write~math+socst+ses.f, hsb2)
+par(mfrow=c(3,2))
+plot(reg, which=1:2)
+plot(reg, which=3:4)
+plot(reg, which=5:6)
+detach(hsb2)
